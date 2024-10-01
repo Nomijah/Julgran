@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Threading;
 
 namespace Ovning_Julgran
 {
     class Program
     {
-        // Method for printing ball with random color
+        // Method for printing ball with random color.
         static void BallPrint()
         {
             Random rnd = new Random();
-            // Randomize 3 different colors
+            // Randomize 3 different colors.
             int clr = rnd.Next(3);
             if (clr == 0)
             {
@@ -26,16 +27,18 @@ namespace Ovning_Julgran
                 Console.Write("o");
             }
         }
-        // Method for printing part of tree
+
+        // Method for printing part of tree.
         static void TreePrint()
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("*");
         }
-        // Method for printing a star to sit atop the tree
+
+        // Method for printing a star to sit atop the tree.
         static void StarPrint(int size)
         {
-            // Using size to determine the center of the tree
+            // Using size to determine the center of the tree.
             Console.ForegroundColor = ConsoleColor.Yellow;
             for (int j = 0; j < (size - 1) / 2; j++)
             {
@@ -87,19 +90,18 @@ namespace Ovning_Julgran
             Console.WriteLine();
         }
 
-
+        static int userNumber;
         static void Main(string[] args)
         {
-            // Ask user to enter a number to determine size of tree
+            // Ask user to enter a number to determine size of tree.
             Console.Write("Hur många rader hög ska granen vara? ");
             string userInput = Console.ReadLine();
-            int userNumber;
             while (!Int32.TryParse(userInput, out userNumber))
             {
                 Console.WriteLine("Använd endast siffror, försök igen:");
                 userInput = Console.ReadLine();
             }
-            // Make an array containing odd numbers in the amount chosen by user
+            // Make an array containing odd numbers in the amount chosen by user.
             int[] tree = new int[userNumber];
             int counter = 1;
             for (int i = 0; i < userNumber; i++)
@@ -107,14 +109,22 @@ namespace Ovning_Julgran
                 tree[i] = counter;
                 counter += 2;
             }
-            // Print out the star
+
+            // Print the star.
+            Console.WriteLine();
             StarPrint(tree[userNumber - 1]);
-            // Create rnd nmb generator
-            Random rnd = new Random();
-            // Variables for controlling that there is distance between balls
+            // Print the tree
+            PrintTree(tree);
+
+            Console.ReadKey();
+        }
+
+        static void PrintTree(int[] tree)
+        {
+            // Variables for controlling that there is distance between balls.
             int ballCounter = 0;
             bool tooMany = false;
-
+            var rnd = new Random();
             for (int i = 0; i < userNumber; i++)
             {
                 if (i < 4)
@@ -125,14 +135,14 @@ namespace Ovning_Julgran
                     }
                     for (int k = 0; k < tree[i]; k++)
                     {
-                        // Randomize ball placement on the tree
+                        // Randomize ball placement on the tree.
                         int ball = rnd.Next(4);
                         if (ball == 3 && tooMany == false)
                         {
                             BallPrint();
-                            // Set boolean to true to avoid entering if-statement next round
+                            // Set boolean to true to avoid entering if-statement next round.
                             tooMany = true;
-                            // Reset counter
+                            // Reset counter.
                             ballCounter = 0;
                         }
                         else
@@ -140,14 +150,15 @@ namespace Ovning_Julgran
                             TreePrint();
                             ballCounter++;
                         }
-                        // When ball has not been placed for 4 rounds, enter random-loop again
+                        // When ball has not been placed for 4 rounds, enter random-loop again.
                         if (ballCounter == 4)
                         {
                             tooMany = false;
                         }
                     }
                 }
-                // Adjust size of tree after 4 rounds
+
+                // Adjust size of tree after 4 rounds.
                 else if (i >= 4 && i < 9)
                 {
                     for (int j = 0; j < (tree[userNumber - 1] - (tree[i] - 4)) / 2; j++)
@@ -174,7 +185,8 @@ namespace Ovning_Julgran
                         }
                     }
                 }
-                // Adjust size of tree again
+
+                // Adjust size of tree again.
                 else if (i >= 9 && i < 17)
                 {
                     for (int j = 0; j < (tree[userNumber - 1] - (tree[i] - 8)) / 2; j++)
@@ -201,7 +213,8 @@ namespace Ovning_Julgran
                         }
                     }
                 }
-                // Adjust size of tree one last time
+
+                // Adjust size of tree one last time.
                 else if (i >= 17)
                 {
                     for (int j = 0; j < (tree[userNumber - 1] - (tree[i] - 12)) / 2; j++)
@@ -228,10 +241,10 @@ namespace Ovning_Julgran
                         }
                     }
                 }
-                // Go to next row
+
+                // Go to next row.
                 Console.Write("\n");
             }
-            Console.ReadKey();
         }
     }
 }
